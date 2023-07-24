@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Room{% endblock %}
+
+{% block body %}
+    <div class="flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gray-50">
+        <div class="bg-white p-10 ring-1 ring-gray-700/5 sm:mx-auto sm:rounded-lg">
+            <div class="w-96">
+                <ul id="room_users" class="mb-6 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white"></ul>
+
+                <hr class="mx-10 mb-6 border-gray-100"/>
+
+                <div class="relative mb-6">
+                    <label for="invite_link"></label>
+                    <input type="text" id="invite_link" readonly
+                           class="mb-2 w-full rounded-lg border-2 border-gray-100 bg-gray-50 p-2.5 text-sm text-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                           value="{{ url('app_index') }}?roomId={{ room_id }}"
+                           required/>
+
+                    <button type="submit" id="copy_invite_link"
+                            class="absolute bottom-4 right-2.5 rounded-lg bg-blue-700 px-2 py-1 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Copy
+                    </button>
+                </div>
+
+                <button id="room_leave" type="submit"
+                        class="w-full rounded-lg bg-red-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                    {{ (owner_id == user.id) ? 'Leave and close room' : 'Leave' }}
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {{ encore_entry_link_tags('room') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        const USERNAME = '{{ user.username }}';
+        const USER_ID = {{ user.id }};
+        const ROOM_ID = {{ room_id }};
+        const ROOM_OWNER_ID = {{ owner_id }};
+        const USERS = {{ users|raw }};
+        const LOGIN_EVENT_SOURCE_URL = '{{ mercure('room-' ~ room_id) }}';
+        const EXIT_EVENT_SOURCE_URL = '{{ mercure('room-' ~ room_id ~ '-' ~ user.id, { subscribe: 'room-' ~ room_id ~ '-' ~ user.id }) }}';
+    </script>
+
+    {{ encore_entry_script_tags('room') }}
+{% endblock %}

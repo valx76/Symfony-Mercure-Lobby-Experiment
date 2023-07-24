@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+    <div class="flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 items-center">
+        <div id="exit_message" class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 hidden" role="alert"></div>
+
+        <div class="bg-white p-10 ring-1 ring-gray-700/5 sm:mx-auto sm:rounded-lg">
+            <form id="form_login" method="POST" action="/login">
+                <input type="hidden" id="user_id" name="user_id" value="">
+                <input type="hidden" id="room_id" name="room_id" value="{{ room_id }}">
+
+                <label for="username"></label>
+                <input type="text" id="username" name="username" placeholder="Username" required
+                       class="mb-2 w-full rounded-lg border-2 border-gray-100 bg-gray-50 p-2.5 text-sm text-gray-900 focus:outline-none focus:ring-4 focus:ring-blue-300">
+
+                <input type="submit" value="Login"
+                        class="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('index') }}
+{% endblock %}
